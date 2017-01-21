@@ -65,7 +65,7 @@ public class GameManager : MonoBehaviour
         Invoke("DropSound", 0.825f);
     }
 
-    void Reset()
+    public void Reset()
     {
         SurfaceLight.enabled = true;
         UnderwaterLight.enabled = false;
@@ -75,9 +75,11 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.useGravity = false;
         Ball.transform.position = InitialBallPosition;
         AudioManager.Instance.StopAllSound();
-        GameCamera.Light.enabled = false;
+        GameCamera.Camera.clearFlags = CameraClearFlags.Skybox;
+        GameCamera.Camera.backgroundColor = GameCamera.InitialColor;
         GameStarted = false;
         CanReadInput = false;
+        TapToStartArea.SetActive(true);
 
 
         CancelInvoke();
@@ -89,10 +91,11 @@ public class GameManager : MonoBehaviour
         UnderwaterLight.enabled = true;
         SurfaceLight.enabled = false;
         Ball.rigidbody.drag = Ball.UnderwaterDrag;
-        GameCamera.Light.enabled = true;
+        //GameCamera.Light.enabled = true;
         Ball.OriginalYDepth = transform.position.y;
         Ball.rigidbody.drag = InitialBallDrag;
-
+        GameCamera.Camera.clearFlags = CameraClearFlags.SolidColor;
+        GameCamera.Camera.backgroundColor = GameCamera.Skycolor;
 
         Invoke("AllowInput", TimeToReadInput);
     }

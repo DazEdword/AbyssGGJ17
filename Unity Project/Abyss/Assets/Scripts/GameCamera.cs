@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class GameCamera : MonoBehaviour
 {
+    public Camera Camera;
+    public Color InitialColor;
+    public Color Skycolor;
     public GameObject ObjectToFollow;
     [Range(0, 2)]
     public float SpeedX = 1f;
