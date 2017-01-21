@@ -31,14 +31,15 @@ public class GameCamera : MonoBehaviour
         float myZ = gameObject.transform.position.z;
         float targetZ = -(5 + (-ZFactor * GameManager.Instance.Ball.transform.position.y));
 
-        float lerpedX = Mathf.Lerp(myX, followX, Time.deltaTime * SpeedX);
-        float lerpedY = Mathf.Lerp(myY, followY, Time.deltaTime * SpeedY);
+        float lerpedX = Mathf.Lerp(myX, followX, Mathf.Clamp01(Time.deltaTime * SpeedX));
+        float lerpedY = Mathf.Lerp(myY, followY, Mathf.Clamp01(Time.deltaTime * SpeedY));
         float lerpedZ = Mathf.Lerp(myZ, targetZ, Time.deltaTime);
 
 
         //this is a super simple linear tween.
         transform.position = new Vector3(lerpedX, lerpedY, lerpedZ);
 
-        transform.LookAt(ObjectToFollow.transform);
+        if (GameManager.Instance.CanReadInput) //Smooth this
+            transform.LookAt(ObjectToFollow.transform);
     }
 }

@@ -9,6 +9,9 @@ public class OptionsMenu : MonoBehaviour
 
     public void OptionsButton()
     {
+        GameManager.Instance.Reset();
+
+        return;
         if (gameObject.activeInHierarchy)
         {
             Close();
