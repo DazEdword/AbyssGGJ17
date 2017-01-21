@@ -11,43 +11,29 @@ public class Locomotor : MonoBehaviour {
     [HideInInspector]
     public Creature Creature;
 
-    Vector3 targetPosition = Vector3.zero;
-    public Vector3 TargetPosition
-    {
-        get
-        {
-            return targetPosition;
-        }
-        set
-        {
-            targetPosition = value;
-        }
-    }
+    public enum MovementTypes { JET = 0, SWIM = 1 };
 
-    [HideInInspector]
-    public float MinimumDistanceToTargetPosition = 1f;
-    public float JetSpeed = 20f;
-    public float jetFreq = 1;
-
-    public Vector3 jetDirection;
+    //Vector3 targetPosition = Vector3.zero;
+    //public Vector3 TargetPosition
+    //{
+    //    get
+    //    {
+    //        return targetPosition;
+    //    }
+    //    set
+    //    {
+    //        targetPosition = value;
+    //    }
+    //}
 
     void Awake()
     {
         Rigidbody = GetComponent<Rigidbody>();
-        Collider = GetComponent<Collider>();
-        Creature = GetComponent<Creature>();
-        TargetPosition = transform.position;
     }
 
     void Start()
     {
-        //AutoGround();
-        //TargetPosition = transform.position;
-        //Stop();
-
-        //MinimumDistanceToTargetPosition = Collider.radius * +0.5f;
-        InvokeRepeating("Jet", 0, jetFreq);
-
+       
     }
 
     // Update is called once per frame
@@ -57,30 +43,21 @@ public class Locomotor : MonoBehaviour {
     public void Stop()
     {
         Rigidbody.velocity = Vector3.zero;
-        TargetPosition = transform.position;
+        //TargetPosition = transform.position;
     }
 
 
-    public void Jet()
+    
+    public void Jet(Vector3 jetDirection, float jetSpeed)
     {
         float xDirectionSign = Mathf.Sign(Random.Range(-1f, 1f));
 
         jetDirection.x *= xDirectionSign;
 
-        //Rigidbody.velocity = jetDirection.normalized * JetSpeed;
-        Rigidbody.AddForce(jetDirection.normalized * JetSpeed);
-
-        //Debug.Log(Rigidbody.velocity.magnitude);
-        //while(Rigidbody.velocity.magnitude)
+        Rigidbody.AddForce(jetDirection.normalized * jetSpeed);
     }
 
+    public void Swim() {
 
-    /*
-    public void MoveTowardsPoint(Vector3 target)
-    {
-        Vector3 targetDir = new Vector3(target.x, transform.position.y, 0);
-        targetDir -= transform.position;
-
-        Rigidbody.velocity = targetDir.normalized * zSpeed;
-    } */
+    }
 }

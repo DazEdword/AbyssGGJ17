@@ -2,10 +2,15 @@
 
 public class Wanderer : Brain
 {
-    public float timerToMove = 0;
-
+    //public float timerToMove = 0;
     public int chanceToStop = 4;
 
+    public float JetSpeed = 20f;
+    public float jetFreq = 1;
+
+    public Vector3 jetDirection;
+
+    /*
     public override void GetInput()
     {
         //base.GetInput();
@@ -18,8 +23,9 @@ public class Wanderer : Brain
             if (timerToMove < 0)
                 timerToMove = 0;
         }
-    }
+    } */
 
+    /*
     private void MoveToRandomPosition()
     {
         if (Random.Range(1, 10) < chanceToStop) {
@@ -34,5 +40,19 @@ public class Wanderer : Brain
         }
 
         timerToMove = 1;
+    } */
+
+    public void Start() {
+        WanderFloat();
+    }
+    //Jellyfish jet
+    public void WanderFloat() {
+        InvokeRepeating("Jet", 0, jetFreq);
+    }
+
+    void Jet()
+    {
+
+        Creature.Locomotor.Jet(jetDirection, JetSpeed);
     }
 }
