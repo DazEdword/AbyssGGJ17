@@ -12,7 +12,7 @@ public class InputManager : MonoBehaviour
         DrawCurrent
     }
 
-    public static InputModes InputMode = InputModes.DrawCurrent;
+    public static InputModes InputMode = InputModes.FingerFollow;
 
 
     public SphereCollider TouchSphere;
@@ -86,7 +86,7 @@ public class InputManager : MonoBehaviour
             //Put the touch ball
             TouchSphere.transform.position = MouseWorldPosition;
             TouchSphere.enabled = true;
-            TouchSphereRenderer.enabled = true;
+            TouchSphereRenderer.enabled = ShowGestures;
         }
         else
         {
