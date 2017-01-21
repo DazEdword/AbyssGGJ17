@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     //Flags
     public bool GameStarted = false;
     public bool CanReadInput = false;
-    public bool Quickstart = false;
 
     //Initial positions
     Vector3 InitialCameraPosition;
@@ -41,16 +40,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        AudioManager.Instance.BGMusicSource.Play();
-
-        if (Quickstart)
-        {
-            DropKey();
-            EnterWater();
-            CancelInvoke();
-            CanReadInput = true;
-            GameCamera.transform.position = Ball.transform.position;
-        }
+        AudioManager.Instance.PlayMusic("overwater_ambient");
     }
 
 
@@ -84,7 +74,7 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.velocity = Vector3.zero;
         Ball.rigidbody.useGravity = false;
         Ball.transform.position = InitialBallPosition;
-        AudioManager.Instance.BGMusicSource.Stop();
+        AudioManager.Instance.StopAllSound();
         GameCamera.Light.enabled = false;
         GameStarted = false;
         CanReadInput = false;
