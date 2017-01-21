@@ -60,7 +60,6 @@ public class Locomotor : MonoBehaviour {
     public void Stop()
     {
         Rigidbody.velocity = Vector3.zero;
-        //TargetPosition = transform.position;
     }
 
     
@@ -72,10 +71,6 @@ public class Locomotor : MonoBehaviour {
         this.jetDirection = jetDirection;
         this.jetDirection.x = jetDirection.x*xDirectionSign;
         this.jetSpeed = jetSpeed;
-        
-
-        
-
     }
     private void thrust()
     {  
@@ -105,7 +100,7 @@ public class Locomotor : MonoBehaviour {
         }
     }
 
-    public void Swim() {
-
+    public void Swim(Vector3 swimDirection, float swimSpeed) {
+        Rigidbody.velocity = swimDirection * swimSpeed;
     }
 }

@@ -16,46 +16,31 @@ public class Wanderer : Brain
 
     public Vector3 jetDirection;
 
-    /*
-    public override void GetInput()
+    public void Start()
     {
-        //base.GetInput();
-
-        if (timerToMove <= 0)
-            MoveToRandomPosition();
-        else
-        {
-            //timerToMove -= Creature.RefreshFrequency;
-            if (timerToMove < 0)
-                timerToMove = 0;
-        }
-    } */
-
-    /*
-    private void MoveToRandomPosition()
-    {
-        if (Random.Range(1, 10) < chanceToStop) {
-            Creature.Locomotor.Stop();
-        }
-        else
-        {
-            Vector3 nuPos = transform.position;
-            nuPos.x += (.5f - Random.value) * 5.0f;
-            nuPos.z += (.5f - Random.value) * 3.0f;
-            Creature.Locomotor.TargetPosition = nuPos;
-        }
-
-        timerToMove = 1;
-    } */
-
-    public void Start() {
-        WanderFloat();
+        InvokeRepeating("Movement", 0, jetFreq);
     }
+
+    void Movement()
+    {
+        switch (Creature.CreatureType)
+        {
+            case Creature.CREATURES.Fish:
+                Creature.Locomotor.Swim(jetDirection, swimSpeed);
+                break;
+            case Creature.CREATURES.Jellyfish:
+                Jet();
+                break;
+            case Creature.CREATURES.Anemone:
+                break;
+            case Creature.CREATURES.END:
+                break;
+            default:
+                break;
+        }
+    }
+
     //Jellyfish jet
-    public void WanderFloat() {
-        InvokeRepeating("Jet", 0, jetFreq);
-    }
-
     void Jet()
     {
         Creature.Locomotor.Jet(jetDirection, jetSpeed);
