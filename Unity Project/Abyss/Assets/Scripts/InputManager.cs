@@ -18,12 +18,15 @@ public class InputManager : MonoBehaviour
     public SphereCollider TouchSphere;
     public MeshRenderer TouchSphereRenderer;
     public GameObject GestureBall;
+    public GameObject DragParticles;
 
     public bool ShowGestures = true;
 
 
     public float DrawCurrentMovementSpeed = 5;
     public float DrawCurrentPointDistance = 0.1f;
+    public float DrawCurrentBubblesDuration = 1;
+    public float DrawCurrentDistanceFromBottle = 3;
 
 
 
@@ -95,6 +98,7 @@ public class InputManager : MonoBehaviour
 
     List<Vector3> TouchedPoints = new List<Vector3>();
     List<GameObject> GestureBalls = new List<GameObject>();
+    List<KeyValuePair<GameObject, float>> Bubbles = new List<KeyValuePair<GameObject, float>>();
 
     float RegisterMinimumTemp = 0.025f;
     float RegisterClock = 0;
@@ -109,6 +113,13 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             pos = GetWorldTouchedPosition(Input.mousePosition, ref contact);
+            DragParticles.SetActive(true);
+            DragParticles.transform.position = pos;
+
+        }
+        else
+        {
+            DragParticles.SetActive(false);
         }
 
         if (RegisterClock > 0)
@@ -121,13 +132,14 @@ public class InputManager : MonoBehaviour
             if (RegisterClock <= 0 && TouchedPoints.Count < MaxLengthOfGesture)
             {
                 float distance = float.MaxValue;
+                float distanceFromBottle = Vector3.Distance(GameManager.Instance.Ball.transform.position, pos);
 
                 if (TouchedPoints.Count > 2)
                 {
                     distance = Vector3.Distance(TouchedPoints.Last(), pos);
                 }
 
-                if (distance > DrawCurrentPointDistance)
+                if (distance > DrawCurrentPointDistance && distanceFromBottle < DrawCurrentDistanceFromBottle)
                 {
                     TouchedPoints.Add(pos);
                     SpawnGestureBall(pos);
@@ -142,6 +154,8 @@ public class InputManager : MonoBehaviour
             GameManager.Instance.ConsoleWrite("Moving", 0);
             RegisterClock = 0;
         }
+
+        ExtinguishBubbles();
     }
 
     void MoveToPointAndRemoveFromList()
@@ -189,6 +203,10 @@ public class InputManager : MonoBehaviour
         GameObject obj = GameObject.Instantiate(GestureBall, Position, Quaternion.identity) as GameObject;
         GestureBalls.Add(obj);
 
+        Transform BubbleParticle = obj.transform.GetChild(0);
+        BubbleParticle.SetParent(null);
+        Bubbles.Add(new KeyValuePair<GameObject, float>(BubbleParticle.gameObject, DrawCurrentBubblesDuration));
+
         if (GestureBalls.Count > 1)
         {
             obj.transform.LookAt(GestureBalls[GestureBalls.Count - 2].transform);
@@ -196,6 +214,38 @@ public class InputManager : MonoBehaviour
         else
         {
             obj.transform.rotation = Quaternion.identity;
+        }
+
+    }
+
+    void ExtinguishBubbles()
+    {
+        if (Bubbles.Count < 1)
+            return;
+
+        List<GameObject> ToDestroy = new List<GameObject>();
+
+        for (int i = 0; i < Bubbles.Count; i++)
+        {
+            float newValue = Bubbles[i].Value - Time.deltaTime;
+            Bubbles[i] = new KeyValuePair<GameObject, float>(Bubbles[i].Key, newValue);
+            if (Bubbles[i].Value <= 0)
+            {
+                ToDestroy.Add(Bubbles[i].Key);
+            }
+        }
+
+        while (ToDestroy.Count > 0)
+        {
+            int index = Bubbles.FindIndex(x => x.Key == ToDestroy[0]);
+
+            if (index >= 0)
+            {
+                Bubbles.RemoveAt(index);
+            }
+
+            Destroy(ToDestroy[0]);
+            ToDestroy.RemoveAt(0);
         }
 
     }
