@@ -15,9 +15,7 @@ public class GameCamera : MonoBehaviour
 
     public float ZFactor = 0.01f;
 
-    public Light Light;
-
-    void LateUpdate()
+    void FixedUpdate()
     {
         if (!GameManager.Instance.GameStarted)
             return;
@@ -31,15 +29,21 @@ public class GameCamera : MonoBehaviour
         float myZ = gameObject.transform.position.z;
         float targetZ = -(5 + (-ZFactor * GameManager.Instance.Ball.transform.position.y));
 
-        float lerpedX = Mathf.Lerp(myX, followX, Mathf.Clamp01(Time.deltaTime * SpeedX));
-        float lerpedY = Mathf.Lerp(myY, followY, Mathf.Clamp01(Time.deltaTime * SpeedY));
-        float lerpedZ = Mathf.Lerp(myZ, targetZ, Time.deltaTime);
+        float lerpedX = Mathf.Lerp(myX, followX, Mathf.Clamp01(Time.fixedDeltaTime * SpeedX));
+        float lerpedY = Mathf.Lerp(myY, followY, Mathf.Clamp01(Time.fixedDeltaTime * SpeedY));
+        float lerpedZ = Mathf.Lerp(myZ, targetZ, Time.fixedDeltaTime);
 
 
         //this is a super simple linear tween.
         transform.position = new Vector3(lerpedX, lerpedY, lerpedZ);
 
-        if (GameManager.Instance.CanReadInput) //Smooth this
+        if (GameManager.Instance.CanReadInput)
+        {
             transform.LookAt(ObjectToFollow.transform);
+        }
+        else
+        {
+            transform.rotation = Quaternion.identity;
+        }
     }
 }

@@ -38,18 +38,24 @@ public class GameManager : MonoBehaviour
     Text ConsoleText;
     public float TimeToEnterWater = 2;
     public float TimeToReadInput = 2;
+    public Text MainTitle;
+    public float CameraZ = -2;
+
 
     void Start()
     {
         AudioManager.Instance.PlayMusic("overwater_ambient");
         OptionsMenuButton.SetActive(false);
+        AudioManager.Instance.PlayMusicBg("overwater_ambient");
+        MainTitle.color = TitleFromColor;
+
     }
 
 
     public void StartGame()
     {
         float timeEffect = 1.5f;
-        iTween.MoveTo(Camera.main.gameObject, iTween.Hash("z", Camera.main.transform.position.z - 3f, "time", timeEffect, "easetype", iTween.EaseType.easeOutQuad));
+        iTween.MoveTo(Camera.main.gameObject, iTween.Hash("z", Camera.main.transform.position.z + CameraZ, "time", timeEffect, "easetype", iTween.EaseType.easeOutQuad));
         TapToStartArea.SetActive(false);
         Invoke("DropKey", timeEffect);
         OptionsMenuButton.SetActive(false);
@@ -66,6 +72,7 @@ public class GameManager : MonoBehaviour
         GameStarted = true;
         Ball.rigidbody.drag = InitialBallDrag * 0.1f;
         Invoke("DropSound", 0.825f);
+
     }
 
     public void Reset()
@@ -86,7 +93,9 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.velocity = Vector3.zero;
         Ball.rigidbody.angularVelocity = Vector3.zero;
         Ball.transform.rotation = Quaternion.identity;
-        OptionsMenuButton.SetActive(true);
+        AudioManager.Instance.PlayMusicBg("overwater_ambient");
+
+        MainTitle.color = TitleFromColor;
 
         CancelInvoke();
     }
@@ -102,8 +111,11 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.drag = InitialBallDrag;
         GameCamera.Camera.clearFlags = CameraClearFlags.SolidColor;
         GameCamera.Camera.backgroundColor = GameCamera.Skycolor;
+        AudioManager.Instance.PlayMusic("overwater_music");
 
         Invoke("AllowInput", TimeToReadInput);
+        StartCoroutine(TitleAppear());
+
     }
 
     void DropSound()
@@ -114,8 +126,7 @@ public class GameManager : MonoBehaviour
     void AllowInput()
     {
         CanReadInput = true;
-        OptionsMenuButton.SetActive(true);
-        iTween.ScaleFrom(OptionsMenuButton, iTween.Hash("x", 0, "y", 0, "time", 1, "easetype", iTween.EaseType.easeOutQuad));
+
     }
 
     public void ConsoleClear()
@@ -132,6 +143,47 @@ public class GameManager : MonoBehaviour
     }
 
 
+    public Color TitleFromColor = Color.clear;
+    public Color TitleToColor = Color.white;
+
+    IEnumerator TitleAppear()
+    {
+        Color d = TitleToColor;
+        d.a = 0;
+        MainTitle.color = d;
+
+        yield return new WaitForSeconds(2);
+
+
+        while (MainTitle.color.a < TitleToColor.a)
+        {
+            Color c = MainTitle.color;
+            c.a += 0.02f;
+            MainTitle.color = c;
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        yield return new WaitForSeconds(2);
+
+
+        while (MainTitle.color.a > TitleFromColor.a)
+        {
+            Color c = MainTitle.color;
+            c.a -= 0.01f;
+            MainTitle.color = c;
+            yield return new WaitForSeconds(0.15f);
+        }
+
+        yield return new WaitForSeconds(2);
+        OpenRestartButton();
+    }
+
+
+    void OpenRestartButton()
+    {
+        OptionsMenuButton.SetActive(true);
+        iTween.ScaleFrom(OptionsMenuButton, iTween.Hash("x", 0, "y", 0, "time", 1, "easetype", iTween.EaseType.easeOutQuad));
+    }
 
 
 
