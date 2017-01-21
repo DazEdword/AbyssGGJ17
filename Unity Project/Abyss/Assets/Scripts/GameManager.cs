@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        AudioManager.Instance.BGMusicSource.Play();
+        AudioManager.Instance.PlayMusic("overwater_ambient");
     }
 
 
@@ -71,7 +71,7 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.velocity = Vector3.zero;
         Ball.rigidbody.useGravity = false;
         Ball.transform.position = InitialBallPosition;
-        AudioManager.Instance.BGMusicSource.Stop();
+        AudioManager.Instance.StopAllSound();
         GameCamera.Light.enabled = false;
         GameStarted = false;
         CanReadInput = false;
