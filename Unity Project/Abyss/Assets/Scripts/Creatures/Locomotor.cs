@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class Locomotor : MonoBehaviour {
 
+    public float jetTimer;
+    public bool jet;
+
+
+    //private
+    private Vector3 jetDirection;
+    private float jetSpeed;
+    public int pushPtr = 0;
     [HideInInspector]
     public Rigidbody Rigidbody;
     [HideInInspector]
@@ -33,11 +41,20 @@ public class Locomotor : MonoBehaviour {
 
     void Start()
     {
-       
+        jet = false;  
     }
 
     // Update is called once per frame
     void Update () {
+        if (jetTimer >= 0)
+        {
+            jetTimer -= Time.deltaTime;
+        }
+        if ((jet) && (jetTimer <= 0))
+        {
+            thrust();
+        }
+
     }
 
     public void Stop()
@@ -46,15 +63,46 @@ public class Locomotor : MonoBehaviour {
         //TargetPosition = transform.position;
     }
 
-
     
     public void Jet(Vector3 jetDirection, float jetSpeed)
     {
+        jet = true;
+        pushPtr = 0;
         float xDirectionSign = Mathf.Sign(Random.Range(-1f, 1f));
+        this.jetDirection = jetDirection;
+        this.jetDirection.x = jetDirection.x*xDirectionSign;
+        this.jetSpeed = jetSpeed;
+        
 
-        jetDirection.x *= xDirectionSign;
+        
 
-        Rigidbody.AddForce(jetDirection.normalized * jetSpeed);
+    }
+    private void thrust()
+    {  
+        if (pushPtr < 5)
+        {
+            if (jetTimer <= 0)
+            {
+
+                Rigidbody.AddForce(jetDirection.normalized * jetSpeed);
+
+                pushPtr++;
+                jetTimer = 0.01f;
+            }
+
+
+        }
+        else if ((pushPtr >= 5) && (pushPtr < 10))
+        {
+                Rigidbody.AddForce(jetDirection.normalized * jetSpeed);
+
+                pushPtr++;
+                jetTimer = 0.1f;
+        }
+        else
+        {
+            jet = false;
+        }
     }
 
     public void Swim() {
