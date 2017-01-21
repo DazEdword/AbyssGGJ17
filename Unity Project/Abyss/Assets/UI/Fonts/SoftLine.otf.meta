@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 8bc717ea13ca6eb44a0dbd0259438976
+timeCreated: 1484960136
+licenseType: Pro
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 32
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: SoftLine
+  fontNames:
+  - SoftLine
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
