@@ -7,14 +7,6 @@ public class OptionsMenu : MonoBehaviour
 {
 
 
-    void Awake()
-    {
-        if (gameObject.activeInHierarchy)
-        {
-            gameObject.SetActive(false);
-        }
-    }
-
     public void OptionsButton()
     {
         if (gameObject.activeInHierarchy)
