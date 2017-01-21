@@ -4,6 +4,16 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
+
+    public enum InputModes
+    {
+        FingerFollow,
+        DrawCurrent
+    }
+
+    public static InputModes InputMode = InputModes.FingerFollow;
+
+
     public SphereCollider TouchSphere;
     public MeshRenderer TouchSphereRenderer;
 
@@ -30,6 +40,23 @@ public class InputManager : MonoBehaviour
             }
         }
 
+        switch (InputMode)
+        {
+            case InputModes.FingerFollow:
+                InputMode_FollowFinger(contact);
+                break;
+
+            case InputModes.DrawCurrent:
+
+                break;
+        }
+
+
+    }
+
+
+    void InputMode_FollowFinger(bool contact)
+    {
         if (contact)
         {
             //Put the touch ball
@@ -43,4 +70,7 @@ public class InputManager : MonoBehaviour
             TouchSphereRenderer.enabled = false;
         }
     }
+
+
+
 }
