@@ -126,8 +126,6 @@ public class GameManager : MonoBehaviour
     void AllowInput()
     {
         CanReadInput = true;
-        OptionsMenuButton.SetActive(true);
-        iTween.ScaleFrom(OptionsMenuButton, iTween.Hash("x", 0, "y", 0, "time", 1, "easetype", iTween.EaseType.easeOutQuad));
 
     }
 
@@ -160,12 +158,32 @@ public class GameManager : MonoBehaviour
         while (MainTitle.color.a < TitleToColor.a)
         {
             Color c = MainTitle.color;
-            c.a += 0.01f;
+            c.a += 0.02f;
             MainTitle.color = c;
-            yield return new WaitForSeconds(0.25f);
+            yield return new WaitForSeconds(0.1f);
         }
+
+        yield return new WaitForSeconds(2);
+
+
+        while (MainTitle.color.a > TitleFromColor.a)
+        {
+            Color c = MainTitle.color;
+            c.a -= 0.01f;
+            MainTitle.color = c;
+            yield return new WaitForSeconds(0.15f);
+        }
+
+        yield return new WaitForSeconds(2);
+        OpenRestartButton();
     }
 
+
+    void OpenRestartButton()
+    {
+        OptionsMenuButton.SetActive(true);
+        iTween.ScaleFrom(OptionsMenuButton, iTween.Hash("x", 0, "y", 0, "time", 1, "easetype", iTween.EaseType.easeOutQuad));
+    }
 
 
 

@@ -51,12 +51,36 @@ public class Ball : MonoBehaviour
         {
             TouchRubbish(col.collider.gameObject);
         }
+        else if (col.collider.tag == "Rock")
+        {
+            if (GameManager.Instance.CanReadInput)
+                TouchRocks();
+        }
     }
 
     void TouchRubbish(GameObject RubbishObject)
     {
         RubbishObject.transform.GetChild(0).SetParent(transform);
         Destroy(RubbishObject);
+    }
+
+    float TimeSinceLastSound = 0;
+    void TouchRocks()
+    {
+        if (Time.time - TimeSinceLastSound > 1)
+        {
+            AudioManager.Instance.PlaySound(CollisionRandomSound());
+            TimeSinceLastSound = Time.time;
+        }
+    }
+
+    string CollisionRandomSound()
+    {
+        List<string> sounds = new List<string>() { "colision-0", "colision-1", "colision-3", "colision-4", "colision-5", "colision-6", "colision-7" };
+
+        int random = Random.Range(0, sounds.Count);
+
+        return sounds[random];
     }
 
 
@@ -79,5 +103,7 @@ public class Ball : MonoBehaviour
             GameManager.Instance.ConsoleWrite("Gravity: " + (rigidbody.useGravity ? "ON" : "OFF"));
         }
     }
+
+
 
 }
