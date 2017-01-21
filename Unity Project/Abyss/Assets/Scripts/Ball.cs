@@ -51,7 +51,9 @@ public class Ball : MonoBehaviour
         {
             TouchRubbish(col.collider.gameObject);
         }
-        else if (col.collider.tag == "Rock")
+        
+        
+        if (col.collider.tag == "Rock")
         {
             if (GameManager.Instance.CanReadInput)
                 TouchRocks();
