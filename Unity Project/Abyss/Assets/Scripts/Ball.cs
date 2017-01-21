@@ -58,4 +58,26 @@ public class Ball : MonoBehaviour
         RubbishObject.transform.GetChild(0).SetParent(transform);
         Destroy(RubbishObject);
     }
+
+
+    void Update()
+    {
+        Cheats();
+    }
+
+
+    void Cheats()
+    {
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            GameManager.Instance.Reset();
+            GameManager.Instance.ConsoleWrite("Reset");
+        }
+        if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            rigidbody.useGravity = !rigidbody.useGravity;
+            GameManager.Instance.ConsoleWrite("Gravity: " + (rigidbody.useGravity ? "ON" : "OFF"));
+        }
+    }
+
 }

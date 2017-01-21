@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public Text TapToStartText;
     public GameObject TapToStartArea;
     public GameCamera GameCamera;
+    public GameObject OptionsMenuButton;
     public Ball Ball;
     [SerializeField]
     Text ConsoleText;
@@ -41,6 +42,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         AudioManager.Instance.PlayMusic("overwater_ambient");
+        OptionsMenuButton.SetActive(false);
     }
 
 
@@ -50,6 +52,7 @@ public class GameManager : MonoBehaviour
         iTween.MoveTo(Camera.main.gameObject, iTween.Hash("z", Camera.main.transform.position.z - 3f, "time", timeEffect, "easetype", iTween.EaseType.easeOutQuad));
         TapToStartArea.SetActive(false);
         Invoke("DropKey", timeEffect);
+        OptionsMenuButton.SetActive(false);
     }
 
 
@@ -65,7 +68,7 @@ public class GameManager : MonoBehaviour
         Invoke("DropSound", 0.825f);
     }
 
-    void Reset()
+    public void Reset()
     {
         SurfaceLight.enabled = true;
         UnderwaterLight.enabled = false;
@@ -75,10 +78,15 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.useGravity = false;
         Ball.transform.position = InitialBallPosition;
         AudioManager.Instance.StopAllSound();
-        GameCamera.Light.enabled = false;
+        GameCamera.Camera.clearFlags = CameraClearFlags.Skybox;
+        GameCamera.Camera.backgroundColor = GameCamera.InitialColor;
         GameStarted = false;
         CanReadInput = false;
-
+        TapToStartArea.SetActive(true);
+        Ball.rigidbody.velocity = Vector3.zero;
+        Ball.rigidbody.angularVelocity = Vector3.zero;
+        Ball.transform.rotation = Quaternion.identity;
+        OptionsMenuButton.SetActive(true);
 
         CancelInvoke();
     }
@@ -89,10 +97,11 @@ public class GameManager : MonoBehaviour
         UnderwaterLight.enabled = true;
         SurfaceLight.enabled = false;
         Ball.rigidbody.drag = Ball.UnderwaterDrag;
-        GameCamera.Light.enabled = true;
+        //GameCamera.Light.enabled = true;
         Ball.OriginalYDepth = transform.position.y;
         Ball.rigidbody.drag = InitialBallDrag;
-
+        GameCamera.Camera.clearFlags = CameraClearFlags.SolidColor;
+        GameCamera.Camera.backgroundColor = GameCamera.Skycolor;
 
         Invoke("AllowInput", TimeToReadInput);
     }
@@ -105,6 +114,8 @@ public class GameManager : MonoBehaviour
     void AllowInput()
     {
         CanReadInput = true;
+        OptionsMenuButton.SetActive(true);
+        iTween.ScaleFrom(OptionsMenuButton, iTween.Hash("x", 0, "y", 0, "time", 1, "easetype", iTween.EaseType.easeOutQuad));
     }
 
     public void ConsoleClear()
