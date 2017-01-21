@@ -32,6 +32,8 @@ public class GameManager : MonoBehaviour
     public GameObject TapToStartArea;
     public GameCamera GameCamera;
     public Ball Ball;
+    [SerializeField]
+    Text ConsoleText;
     public float TimeToEnterWater = 2;
     public float TimeToReadInput = 2;
 
@@ -60,8 +62,6 @@ public class GameManager : MonoBehaviour
         GameStarted = true;
     }
 
-
-
     void Reset()
     {
         SurfaceLight.enabled = true;
@@ -75,6 +75,7 @@ public class GameManager : MonoBehaviour
         GameCamera.Light.enabled = false;
         GameStarted = false;
         CanReadInput = false;
+
 
         CancelInvoke();
     }
@@ -95,4 +96,22 @@ public class GameManager : MonoBehaviour
     {
         CanReadInput = true;
     }
+
+    public void ConsoleClear()
+    {
+        ConsoleText.text = string.Empty;
+    }
+
+    public void ConsoleWrite(string Text, float Duration = 2)
+    {
+        ConsoleText.text = Text;
+
+        if (Duration > 0)
+            Invoke("ConsoleClear", Duration);
+    }
+
+
+
+
+
 }
