@@ -13,7 +13,8 @@ public class AudioManager : MonoBehaviour
     }
 
     public AudioListener Listener;
-    public AudioSource Source_Music;
+    public AudioSource Source_Music1;
+    public AudioSource Source_Music2;
     public AudioSource Source_Sound1;
     public AudioSource Source_Sound2;
     public AudioSource Source_Sound3;
@@ -26,11 +27,21 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(string Name)
     {
-        Source_Music.clip = GetClipFromName(Name);
+        Source_Music1.clip = GetClipFromName(Name);
 
-        if (Source_Music.clip != null)
+        if (Source_Music1.clip != null)
         {
-            Source_Music.Play();
+            Source_Music1.Play();
+        }
+    }
+
+    public void PlayMusicBg(string Name)
+    {
+        Source_Music2.clip = GetClipFromName(Name);
+
+        if (Source_Music2.clip != null)
+        {
+            Source_Music2.Play();
         }
     }
 
@@ -51,7 +62,8 @@ public class AudioManager : MonoBehaviour
 
     public void StopMusic()
     {
-        Source_Music.Stop();
+        Source_Music1.Stop();
+        Source_Music2.Stop();
     }
 
     public void StopAllSound()
