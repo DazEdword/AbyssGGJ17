@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
         InitialCameraPosition = GameCamera.transform.position;
         InitialCameraRotation = GameCamera.transform.rotation;
         InitialBallPosition = Ball.transform.position;
+        InitialBallDrag = Ball.rigidbody.drag;
     }
 
 
@@ -25,7 +26,7 @@ public class GameManager : MonoBehaviour
     Vector3 InitialCameraPosition;
     Quaternion InitialCameraRotation;
     Vector3 InitialBallPosition;
-
+    float InitialBallDrag;
 
     //References
     public Light SurfaceLight, UnderwaterLight;
@@ -70,6 +71,8 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.drag = Ball.SurfaceDrag;
         Ball.rigidbody.angularVelocity = new Vector3(UnityEngine.Random.Range(-r, r), UnityEngine.Random.Range(-r, r), UnityEngine.Random.Range(-r, r));
         GameStarted = true;
+        Ball.rigidbody.drag = InitialBallDrag * 0.1f;
+        Invoke("DropSound", 0.825f);
     }
 
     void Reset()
@@ -98,8 +101,15 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.drag = Ball.UnderwaterDrag;
         GameCamera.Light.enabled = true;
         Ball.OriginalYDepth = transform.position.y;
+        Ball.rigidbody.drag = InitialBallDrag;
+
 
         Invoke("AllowInput", TimeToReadInput);
+    }
+
+    void DropSound()
+    {
+        AudioManager.Instance.PlaySound("colision-2");
     }
 
     void AllowInput()
