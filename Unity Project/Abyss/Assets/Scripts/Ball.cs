@@ -43,4 +43,19 @@ public class Ball : MonoBehaviour
 
         Push(motion * AttractionToFinger);
     }
+
+
+    void OnCollisionEnter(Collision col)
+    {
+        if (col.collider.tag == "Rubbish")
+        {
+            TouchRubbish(col.collider.gameObject);
+        }
+    }
+
+    void TouchRubbish(GameObject RubbishObject)
+    {
+        RubbishObject.transform.GetChild(0).SetParent(transform);
+        Destroy(RubbishObject);
+    }
 }
