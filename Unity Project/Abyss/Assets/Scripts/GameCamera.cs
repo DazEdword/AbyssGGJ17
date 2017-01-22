@@ -8,12 +8,16 @@ public class GameCamera : MonoBehaviour
     public Color InitialColor;
     public Color Skycolor;
     public GameObject ObjectToFollow;
+    public Light CameraLight;
     [Range(0, 2)]
     public float SpeedX = 1f;
     [Range(0, 2)]
     public float SpeedY = 1f;
 
     public float ZFactor = 0.01f;
+
+    [HideInInspector]
+    public bool CanLookAt = false;
 
     void FixedUpdate()
     {
@@ -37,9 +41,13 @@ public class GameCamera : MonoBehaviour
         //this is a super simple linear tween.
         transform.position = new Vector3(lerpedX, lerpedY, lerpedZ);
 
-        if (!GameManager.Instance.isCinematicView())
+        if (CanLookAt)
         {
+            Quaternion currentR = transform.rotation;
             transform.LookAt(ObjectToFollow.transform);
+            Quaternion desiredR = transform.rotation;
+
+            transform.rotation = Quaternion.Lerp(currentR, desiredR, Time.deltaTime);
         }
         else
         {

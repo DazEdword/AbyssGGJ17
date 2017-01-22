@@ -9,7 +9,8 @@ public class InputManager : MonoBehaviour
     public enum InputModes
     {
         FingerFollow,
-        DrawCurrent
+        DrawCurrent,
+        FingerCenterFollow
     }
 
     public static InputModes InputMode = InputModes.FingerFollow;
@@ -18,7 +19,7 @@ public class InputManager : MonoBehaviour
     public SphereCollider TouchSphere;
     public MeshRenderer TouchSphereRenderer;
     public GameObject GestureBall;
-    public GameObject DragParticles;
+    public ParticleSystem DragParticles;
 
     public bool ShowGestures = true;
 
@@ -47,11 +48,11 @@ public class InputManager : MonoBehaviour
             case InputModes.DrawCurrent:
                 InputMode_DrawCurrent();
                 break;
+
+            case InputModes.FingerCenterFollow:
+                InputMode_FingerCenterFollow();
+                break;
         }
-
-
-
-
 
     }
 
@@ -74,6 +75,55 @@ public class InputManager : MonoBehaviour
     }
 
 
+    public float FCF_Force = 2;
+    public float FCF_DistanceToFinger = 3;
+
+
+    void InputMode_FingerCenterFollow()
+    {
+        bool contact = false;
+        Vector3 pos = Vector3.zero;
+        bool down = false;
+        bool up = false;
+
+        //Detect touch
+        if (Input.GetMouseButton(0))
+        {
+            pos = GetWorldTouchedPosition(Input.mousePosition, ref contact);
+        }
+
+        down = Input.GetMouseButtonDown(0);
+        up = Input.GetMouseButtonUp(0);
+
+
+        if (contact)
+        {
+            //User is touching
+
+            Vector3 MotionTowardsFinger = (pos - GameManager.Instance.Ball.transform.position);
+            if (MotionTowardsFinger.sqrMagnitude < FCF_DistanceToFinger)
+            {
+                Debug.Log("MotionTowardsFinger.sqrMagnitude:" + MotionTowardsFinger.sqrMagnitude);
+                //GameManager.Instance.Ball.rigidbody.AddForce(MotionTowardsFinger * FCF_Force);
+
+                float diminish = 1 / MotionTowardsFinger.sqrMagnitude;//(MotionTowardsFinger.sqrMagnitude * 1.71848013f - 1.00171848f);
+
+                GameManager.Instance.Ball.rigidbody.velocity = (MotionTowardsFinger * FCF_Force * diminish);
+
+            }
+            else
+                Debug.Log("Far");
+
+
+        }
+        else
+        {
+            //User is not touching
+
+        }
+
+    }
+
     void InputMode_FollowFinger()
     {
         bool contact = false;
@@ -93,15 +143,19 @@ public class InputManager : MonoBehaviour
             TouchSphereRenderer.enabled = ShowGestures;
 
 
-            DragParticles.SetActive(true);
-            DragParticles.transform.position = pos;
+            //DragParticles.SetActive(true);
+            DragParticles.transform.SetParent(GameManager.Instance.Ball.transform);
+            DragParticles.transform.localPosition = Vector3.zero;
+            DragParticles.transform.position -= Vector3.forward * 0.5f;
+            DragParticles.Play();
         }
         else
         {
             TouchSphere.enabled = false;
             TouchSphereRenderer.enabled = false;
 
-            DragParticles.SetActive(false);
+            //DragParticles.SetActive(false);
+            DragParticles.Stop();
 
         }
     }
@@ -124,13 +178,13 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             pos = GetWorldTouchedPosition(Input.mousePosition, ref contact);
-            DragParticles.SetActive(true);
+            //DragParticles.SetActive(true);
             DragParticles.transform.position = pos;
 
         }
         else
         {
-            DragParticles.SetActive(false);
+            //DragParticles.SetActive(false);
         }
 
         if (RegisterClock > 0)
