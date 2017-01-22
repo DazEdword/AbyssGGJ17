@@ -41,7 +41,7 @@ public class GameManager : MonoBehaviour
     public float TimeToReadInput = 2;
     public Text MainTitle;
     public float CameraZ = -2;
-
+    public GameObject Credits;
 
     void Start()
     {
@@ -52,6 +52,8 @@ public class GameManager : MonoBehaviour
         GameCamera.CameraLight.enabled = false;
         InputManager.DragParticles.Stop();
         Ball.Bubbles.Stop();
+        Ball.CloseCredits();
+
     }
 
 
@@ -105,6 +107,7 @@ public class GameManager : MonoBehaviour
         GameCamera.CanLookAt = false;
         InputManager.DragParticles.Stop();
         Ball.Bubbles.Stop();
+        Ball.CloseCredits();
 
         MainTitle.color = TitleFromColor;
 

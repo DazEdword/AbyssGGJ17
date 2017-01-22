@@ -36,6 +36,10 @@ public class Ball : MonoBehaviour
         {
             FingerTouching(col as SphereCollider);
         }
+        else if (col.tag == "Credits")
+        {
+            Credits();
+        }
         else
         {
             MusicChange MusicChanger = col.GetComponent<MusicChange>();
@@ -176,6 +180,10 @@ public class Ball : MonoBehaviour
             rigidbody.useGravity = !rigidbody.useGravity;
             GameManager.Instance.ConsoleWrite("Gravity: " + (rigidbody.useGravity ? "ON" : "OFF"));
         }
+        if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            Credits();
+        }
     }
 
 
@@ -186,5 +194,20 @@ public class Ball : MonoBehaviour
         Destroy(m.gameObject);
     }
 
+
+    void Credits()
+    {
+        float time = 10;
+
+        GameManager.Instance.Credits.GetComponent<RectTransform>().anchoredPosition = new Vector2(0, -140);
+        GameManager.Instance.Credits.SetActive(true);
+        iTween.MoveTo(GameManager.Instance.Credits, iTween.Hash("y", 1500, "time", time, "easetype", iTween.EaseType.linear));
+        Invoke("CloseCredits", time);
+    }
+
+    public void CloseCredits()
+    {
+        GameManager.Instance.Credits.SetActive(false);
+    }
 
 }
