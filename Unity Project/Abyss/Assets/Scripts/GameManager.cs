@@ -20,7 +20,6 @@ public class GameManager : MonoBehaviour
     //Flags
     public bool GameStarted = false;
     public bool CanReadInput = false;
-    public bool disjointCamera = false;
 
     //Initial positions
     Vector3 InitialCameraPosition;
@@ -29,6 +28,7 @@ public class GameManager : MonoBehaviour
     float InitialBallDrag;
 
     //References
+    public InputManager InputManager;
     public Light SurfaceLight, UnderwaterLight;
     public Text TapToStartText;
     public GameObject TapToStartArea;
@@ -50,7 +50,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayMusicBg("overwater_ambient");
         MainTitle.color = TitleFromColor;
         GameCamera.CameraLight.enabled = false;
-
+        InputManager.DragParticles.Stop();
     }
 
 
@@ -61,6 +61,7 @@ public class GameManager : MonoBehaviour
         TapToStartArea.SetActive(false);
         Invoke("DropKey", timeEffect);
         OptionsMenuButton.SetActive(false);
+        GameCamera.CanLookAt = false;
     }
 
 
@@ -97,6 +98,9 @@ public class GameManager : MonoBehaviour
         Ball.transform.rotation = Quaternion.identity;
         AudioManager.Instance.PlayMusicBg("overwater_ambient");
         GameCamera.CameraLight.enabled = false;
+        GameCamera.CanLookAt = false;
+        InputManager.DragParticles.Stop();
+        Ball.Bubbles.Stop();
 
         MainTitle.color = TitleFromColor;
 
@@ -117,7 +121,6 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayMusic("overwater_music");
 
         Invoke("AllowInput", TimeToReadInput);
-        Invoke("SetGameView", 0);
         StartCoroutine(TitleAppear());
 
     }
@@ -125,18 +128,6 @@ public class GameManager : MonoBehaviour
     void DropSound()
     {
         AudioManager.Instance.PlaySound("colision-2");
-    }
-    public void SetGameView()
-    {
-        disjointCamera = false;
-    }
-    public void setCinematicView()
-    {
-        disjointCamera = true;
-    }
-    public bool isCinematicView()
-    {
-        return disjointCamera;
     }
 
     public void AllowInput()
@@ -187,6 +178,7 @@ public class GameManager : MonoBehaviour
         }
 
         yield return new WaitForSeconds(2);
+        GameCamera.CanLookAt = true;
 
 
         while (MainTitle.color.a > TitleFromColor.a)
@@ -200,7 +192,6 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(2);
         OpenRestartButton();
         GameCamera.CameraLight.enabled = true;
-
     }
 
 

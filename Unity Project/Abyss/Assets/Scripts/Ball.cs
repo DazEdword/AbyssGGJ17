@@ -10,15 +10,16 @@ public class Ball : MonoBehaviour
     public float SurfaceDrag = 3;
     public float UnderwaterDrag = 5f;
 
-
     public float AttractionToFinger = 1;
 
-
     public float OriginalYDepth = 0;
+
+    public ParticleSystem Bubbles;
 
     void Awake()
     {
         rigidbody.useGravity = false;
+        Bubbles.Stop();
     }
 
 
@@ -27,7 +28,6 @@ public class Ball : MonoBehaviour
         //rigidbody.velocity = Direction;
         rigidbody.AddForce(Direction);
     }
-
 
 
     void OnTriggerStay(Collider col)
@@ -132,8 +132,29 @@ public class Ball : MonoBehaviour
     void Update()
     {
         Cheats();
+        BubblesEmission();
     }
 
+    public float BubblesEmissionSpeed = 10;
+    void BubblesEmission()
+    {
+        if (!GameManager.Instance.GameStarted)
+            return;
+
+        if (rigidbody.velocity.sqrMagnitude > BubblesEmissionSpeed)
+        {
+            if (!Bubbles.isEmitting && Random.Range(0, 10) > 7)
+            {
+                Bubbles.Play();
+                Invoke("StopBubbles", Random.Range(0.5f, 2));
+            }
+        }
+    }
+
+    void StopBubbles()
+    {
+        Bubbles.Stop();
+    }
 
     void Cheats()
     {

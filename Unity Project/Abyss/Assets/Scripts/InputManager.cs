@@ -19,7 +19,7 @@ public class InputManager : MonoBehaviour
     public SphereCollider TouchSphere;
     public MeshRenderer TouchSphereRenderer;
     public GameObject GestureBall;
-    public GameObject DragParticles;
+    public ParticleSystem DragParticles;
 
     public bool ShowGestures = true;
 
@@ -143,15 +143,19 @@ public class InputManager : MonoBehaviour
             TouchSphereRenderer.enabled = ShowGestures;
 
 
-            DragParticles.SetActive(true);
-            DragParticles.transform.position = pos;
+            //DragParticles.SetActive(true);
+            DragParticles.transform.SetParent(GameManager.Instance.Ball.transform);
+            DragParticles.transform.localPosition = Vector3.zero;
+            DragParticles.transform.position -= Vector3.forward * 0.5f;
+            DragParticles.Play();
         }
         else
         {
             TouchSphere.enabled = false;
             TouchSphereRenderer.enabled = false;
 
-            DragParticles.SetActive(false);
+            //DragParticles.SetActive(false);
+            DragParticles.Stop();
 
         }
     }
@@ -174,13 +178,13 @@ public class InputManager : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             pos = GetWorldTouchedPosition(Input.mousePosition, ref contact);
-            DragParticles.SetActive(true);
+            //DragParticles.SetActive(true);
             DragParticles.transform.position = pos;
 
         }
         else
         {
-            DragParticles.SetActive(false);
+            //DragParticles.SetActive(false);
         }
 
         if (RegisterClock > 0)
