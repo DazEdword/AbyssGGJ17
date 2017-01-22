@@ -57,32 +57,32 @@ public class Ball : MonoBehaviour
             if (GameManager.Instance.CanReadInput)
                 TouchRocks();
         }
-        else if(col.collider.tag == "JellyFish")
+        else if (col.collider.tag == "JellyFish")
         {
             if (GameManager.Instance.CanReadInput)
             {
                 int random = Random.Range(0, 6);
-                if(random == 0)
+                if (random == 0)
                 {
                     AudioManager.Instance.PlaySound("jellyfishsound_A");
                 }
-                else if(random == 1)
+                else if (random == 1)
                 {
                     AudioManager.Instance.PlaySound("jellyfishsound_B");
                 }
-                else if(random == 2)
+                else if (random == 2)
                 {
                     AudioManager.Instance.PlaySound("jellyfishsound_C");
                 }
-                else if(random == 3)
+                else if (random == 3)
                 {
                     AudioManager.Instance.PlaySound("jellyfishsound_D");
                 }
-                else if(random == 4)
+                else if (random == 4)
                 {
                     AudioManager.Instance.PlaySound("jellyfishsound_E");
                 }
-                else if(random == 5)
+                else if (random == 5)
                 {
                     AudioManager.Instance.PlaySound("jellyfishsound_F");
                 }
@@ -90,11 +90,11 @@ public class Ball : MonoBehaviour
                 {
                     AudioManager.Instance.PlaySound("jellyfishsound_G");
                 }
-                
+
             }
 
         }
-        else if(col.collider.tag == "Coral")
+        else if (col.collider.tag == "Coral")
         {
             if (GameManager.Instance.CanReadInput)
             {
@@ -138,7 +138,7 @@ public class Ball : MonoBehaviour
     public float BubblesEmissionSpeed = 10;
     void BubblesEmission()
     {
-        if (!GameManager.Instance.GameStarted)
+        if (!GameManager.Instance.CanReadInput)
             return;
 
         if (rigidbody.velocity.sqrMagnitude > BubblesEmissionSpeed)

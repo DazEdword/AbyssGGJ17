@@ -51,6 +51,7 @@ public class GameManager : MonoBehaviour
         MainTitle.color = TitleFromColor;
         GameCamera.CameraLight.enabled = false;
         InputManager.DragParticles.Stop();
+        Ball.Bubbles.Stop();
     }
 
 
@@ -62,6 +63,9 @@ public class GameManager : MonoBehaviour
         Invoke("DropKey", timeEffect);
         OptionsMenuButton.SetActive(false);
         GameCamera.CanLookAt = false;
+        InputManager.DragParticles.Stop();
+        Ball.Bubbles.Stop();
+
     }
 
 
