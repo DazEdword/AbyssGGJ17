@@ -129,7 +129,7 @@ public class Ball : MonoBehaviour
 
     string CollisionRandomSound()
     {
-        List<string> sounds = new List<string>() { "colision-0", "colision-1", "colision-3", "colision-4", "colision-5", "colision-6", "colision-7" };
+        List<string> sounds = new List<string>() { "colision-0", "colision-6", "colision-7" };
 
         int random = Random.Range(0, sounds.Count);
 
