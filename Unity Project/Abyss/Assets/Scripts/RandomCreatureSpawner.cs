@@ -27,6 +27,9 @@ public class RandomCreatureSpawner : MonoBehaviour
 
     void TrySpawnCreature()
     {
+        if (!GameManager.Instance.CanReadInput)
+            return;
+
         if (Probabilities.Count < 1)
             return;
 
