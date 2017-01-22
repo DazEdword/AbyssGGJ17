@@ -19,7 +19,7 @@ public class Locomotor : MonoBehaviour {
     [HideInInspector]
     public Creature Creature;
 
-    public enum MovementTypes { JET = 0, SWIM = 1 };
+    public enum MovementTypes { JET = 0, SWIM = 1 , STATIC = 2};
 
     //Vector3 targetPosition = Vector3.zero;
     //public Vector3 TargetPosition

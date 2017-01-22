@@ -20,7 +20,7 @@ public class Creature : MonoBehaviour {
 
     //public Locomotor.MovementTypes MovementType = Locomotor.MovementTypes.WALK;
     public CREATURES CreatureType = CREATURES.Jellyfish;
-    public Locomotor.MovementTypes MovementType = Locomotor.MovementTypes.JET;
+    public Locomotor.MovementTypes MovementType;// = Locomotor.MovementTypes.JET;
 
 
     //[HideInInspector]

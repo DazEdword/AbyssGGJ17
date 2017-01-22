@@ -37,7 +37,7 @@ public class GameCamera : MonoBehaviour
         //this is a super simple linear tween.
         transform.position = new Vector3(lerpedX, lerpedY, lerpedZ);
 
-        if (GameManager.Instance.CanReadInput)
+        if (!GameManager.Instance.isCinematicView())
         {
             transform.LookAt(ObjectToFollow.transform);
         }

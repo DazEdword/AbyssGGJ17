@@ -20,6 +20,7 @@ public class GameManager : MonoBehaviour
     //Flags
     public bool GameStarted = false;
     public bool CanReadInput = false;
+    public bool disjointCamera = false;
 
     //Initial positions
     Vector3 InitialCameraPosition;
@@ -114,6 +115,7 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.PlayMusic("overwater_music");
 
         Invoke("AllowInput", TimeToReadInput);
+        Invoke("SetGameView", 0);
         StartCoroutine(TitleAppear());
 
     }
@@ -122,11 +124,31 @@ public class GameManager : MonoBehaviour
     {
         AudioManager.Instance.PlaySound("colision-2");
     }
+    public void SetGameView()
+    {
+        disjointCamera = false;
+    }
+    public void setCinematicView()
+    {
+        disjointCamera = true;
+    }
+    public bool isCinematicView()
+    {
+        return disjointCamera;
+    }
 
-    void AllowInput()
+    public void AllowInput()
     {
         CanReadInput = true;
 
+    }
+    public void restrictInput()
+    {
+        CanReadInput = false;
+    }
+    public bool restrictedInput()
+    {
+        return CanReadInput;
     }
 
     public void ConsoleClear()
