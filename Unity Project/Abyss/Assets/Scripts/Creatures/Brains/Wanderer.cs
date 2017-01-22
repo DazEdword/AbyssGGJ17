@@ -2,17 +2,11 @@
 
 public class Wanderer : Brain
 {
-    
-    //TODO add a "pack" mode, with no random side
-    
     //public float timerToMove = 0;
     public int chanceToStop = 4;
 
-    public float jetSpeed = 20f;
-    public float jetFreq = 1;
-
-    public float swimSpeed = 10f;
-    //public float jetFreq = 1;
+    public float JetSpeed = 20f;
+    public float jetFreq = 4;
 
     public Vector3 jetDirection;
 
@@ -43,6 +37,7 @@ public class Wanderer : Brain
     //Jellyfish jet
     void Jet()
     {
-        Creature.Locomotor.Jet(jetDirection, jetSpeed);
+
+        Creature.Locomotor.Jet(jetDirection, JetSpeed);
     }
 }

@@ -16,6 +16,7 @@ ModelImporter:
     100016: Lamp.001
     100018: Plane
     100020: //RootNode
+    100022: Lamp.002
     400000: Camera
     400002: Cube
     400004: Cube.001
@@ -27,6 +28,7 @@ ModelImporter:
     400016: Lamp.001
     400018: Plane
     400020: //RootNode
+    400022: Lamp.002
     2300000: Cube
     2300002: Cube.001
     2300004: Cube.002
@@ -89,8 +91,8 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 1
-    tangentImportMode: 3
+    normalImportMode: 0
+    tangentImportMode: 0
   importAnimation: 1
   copyAvatar: 0
   humanDescription:
