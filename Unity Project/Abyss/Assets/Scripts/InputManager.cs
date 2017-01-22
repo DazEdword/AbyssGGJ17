@@ -50,6 +50,9 @@ public class InputManager : MonoBehaviour
         }
 
 
+
+
+
     }
 
 
@@ -74,6 +77,7 @@ public class InputManager : MonoBehaviour
     void InputMode_FollowFinger()
     {
         bool contact = false;
+        Vector3 pos = Vector3.zero;
 
         //Detect touch
         if (Input.GetMouseButton(0))
@@ -87,11 +91,18 @@ public class InputManager : MonoBehaviour
             TouchSphere.transform.position = MouseWorldPosition;
             TouchSphere.enabled = true;
             TouchSphereRenderer.enabled = ShowGestures;
+
+
+            DragParticles.SetActive(true);
+            DragParticles.transform.position = pos;
         }
         else
         {
             TouchSphere.enabled = false;
             TouchSphereRenderer.enabled = false;
+
+            DragParticles.SetActive(false);
+
         }
     }
 
