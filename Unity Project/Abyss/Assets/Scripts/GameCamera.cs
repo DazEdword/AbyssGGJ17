@@ -8,6 +8,7 @@ public class GameCamera : MonoBehaviour
     public Color InitialColor;
     public Color Skycolor;
     public GameObject ObjectToFollow;
+    public Light CameraLight;
     [Range(0, 2)]
     public float SpeedX = 1f;
     [Range(0, 2)]

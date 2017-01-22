@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
         OptionsMenuButton.SetActive(false);
         AudioManager.Instance.PlayMusicBg("overwater_ambient");
         MainTitle.color = TitleFromColor;
+        GameCamera.CameraLight.enabled = false;
 
     }
 
@@ -95,6 +96,7 @@ public class GameManager : MonoBehaviour
         Ball.rigidbody.angularVelocity = Vector3.zero;
         Ball.transform.rotation = Quaternion.identity;
         AudioManager.Instance.PlayMusicBg("overwater_ambient");
+        GameCamera.CameraLight.enabled = false;
 
         MainTitle.color = TitleFromColor;
 
@@ -140,7 +142,6 @@ public class GameManager : MonoBehaviour
     public void AllowInput()
     {
         CanReadInput = true;
-
     }
     public void restrictInput()
     {
@@ -198,6 +199,8 @@ public class GameManager : MonoBehaviour
 
         yield return new WaitForSeconds(2);
         OpenRestartButton();
+        GameCamera.CameraLight.enabled = true;
+
     }
 
 

@@ -24,7 +24,8 @@ public class Ball : MonoBehaviour
 
     public void Push(Vector3 Direction)
     {
-        rigidbody.velocity = Direction;
+        //rigidbody.velocity = Direction;
+        rigidbody.AddForce(Direction);
     }
 
 
