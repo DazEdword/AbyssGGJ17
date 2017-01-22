@@ -24,14 +24,14 @@ public class Bouncy : MonoBehaviour {
         if (lightUp)
         {
             light.intensity = Mathf.Lerp(light.intensity, 5, 0.1f);
-            if(light.intensity > 4.8f)
+            if(light.intensity > 4.95f)
             {
                 lightUp = false;
             }
         }
         else
         {
-            light.intensity = Mathf.Lerp(light.intensity, 0, 0.1f);
+            light.intensity = Mathf.Lerp(light.intensity, 0, 0.03f);
         }
 	}
 
@@ -39,14 +39,17 @@ public class Bouncy : MonoBehaviour {
     {
         if(col.gameObject.tag == "Player")
         {
-            col.rigidbody.AddExplosionForce(speed, gameObject.transform.position, 50f);
-            if (gm.restrictedInput())
-            {
-                gm.restrictInput();
-                gm.Invoke("AllowInput", 1f);
-            }
+            
+            
             if (!lightUp)
             {
+                col.rigidbody.velocity = Vector3.zero;
+                col.rigidbody.AddExplosionForce(speed, gameObject.transform.position, 50f);
+                if (gm.restrictedInput())
+                {
+                    gm.restrictInput();
+                    gm.Invoke("AllowInput", 1f);
+                }
                 lightUp = true;
             }
             
