@@ -36,6 +36,14 @@ public class Ball : MonoBehaviour
         {
             FingerTouching(col as SphereCollider);
         }
+        else
+        {
+            MusicChange MusicChanger = col.GetComponent<MusicChange>();
+            if (MusicChanger != null)
+            {
+                ChangeMusic(MusicChanger);
+            }
+        }
     }
 
     void FingerTouching(SphereCollider finger)
@@ -170,6 +178,13 @@ public class Ball : MonoBehaviour
         }
     }
 
+
+    void ChangeMusic(MusicChange m)
+    {
+        AudioManager.Instance.PlayMusic(m.filename);
+
+        Destroy(m.gameObject);
+    }
 
 
 }
